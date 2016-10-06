@@ -1,6 +1,6 @@
 ﻿namespace PhotoEditor
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         /// Обязательная переменная конструктора.

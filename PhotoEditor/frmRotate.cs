@@ -35,7 +35,7 @@ namespace PhotoEditor
             try
             {
                 int degrees = int.Parse(tbDegrees.Text);
-                frmMain.RotateImage(degrees);
+                frmMain.ChangeImageAngle(degrees);
             }
             catch
             {

@@ -42,16 +42,15 @@ namespace PhotoEditor
         {
             if (ModifierKeys.HasFlag(Keys.Control))
             {
-                Image image = imageWrapper.GetImage();
                 imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), true);
                 ShowImage();               
             }
         }
 
-        public void RotateImage(float angle)
+        public void ChangeImageAngle(float angle)
         {
             Image image = imageWrapper.GetImage();
-            imageWrapper.SetImage(imageController.RotateImage(imageWrapper, angle), false);
+            imageController.ChangeImageAngle(angle);
             ShowImage();
         }
 
@@ -73,7 +72,7 @@ namespace PhotoEditor
             {
                 try
                 {
-                    imageController.Orientation = 0.0;
+                    ImageController.Orientation = 0.0;
                     Image image = new Bitmap(open_dialog.FileName);
                     SetImage(image, true);
                     ShowImage();    

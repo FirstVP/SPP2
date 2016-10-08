@@ -11,7 +11,6 @@ namespace PhotoEditor
     {
         Image currentImage;
         Image backupImage;
-        public Size InitialImageSize { get; private set; }
         
         public void Show (Panel panel, PictureBox box, MenuStrip mainMenu)
         {
@@ -26,12 +25,11 @@ namespace PhotoEditor
             box.Invalidate();
         }
 
-        public void SetImage(Image img, bool isNew)
+        public void SetImage(Image img, bool isBackup)
         {
             currentImage = img;
-            if (isNew)
+            if (isBackup)
             {
-                InitialImageSize = img.Size;
                 backupImage = (Image)img.Clone();
             }          
            GC.Collect();

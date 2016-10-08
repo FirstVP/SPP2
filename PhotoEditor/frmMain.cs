@@ -15,7 +15,7 @@ namespace PhotoEditor
     {
         ImageWrapper imageWrapper = new ImageWrapper();
         ImageController imageController = new ImageController();
-        frmRotate frmRotate = new frmRotate();
+        frmRotate frmRotate;
         
         public frmMain()
         {
@@ -35,6 +35,7 @@ namespace PhotoEditor
             pbImage.Location = new Point(ClientSize.Width / 2, ClientSize.Height / 2);
             BackColor = Color.Gray;
             panel.MouseWheel += Resize;
+            frmRotate = new frmRotate(this);
         }
 
         private new void Resize(object sender, MouseEventArgs e)
@@ -42,12 +43,19 @@ namespace PhotoEditor
             if (ModifierKeys.HasFlag(Keys.Control))
             {
                 Image image = imageWrapper.GetImage();
-                imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), false);
+                imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), true);
                 ShowImage();               
             }
         }
 
-        private void ShowImage()
+        public void RotateImage(float angle)
+        {
+            Image image = imageWrapper.GetImage();
+            imageWrapper.SetImage(imageController.RotateImage(imageWrapper, angle), false);
+            ShowImage();
+        }
+
+        public void ShowImage()
         {
             imageWrapper.Show(panel, pbImage, mainMenu);
         }
@@ -64,9 +72,9 @@ namespace PhotoEditor
             if (open_dialog.ShowDialog() == DialogResult.OK)
             {
                 try
-                {                 
+                {
+                    imageController.Orientation = 0.0;
                     Image image = new Bitmap(open_dialog.FileName);
-                    imageController.Scale = 1;
                     SetImage(image, true);
                     ShowImage();    
                 }
@@ -95,7 +103,7 @@ namespace PhotoEditor
 
         private void rotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmRotate.ShowDialog();
+                frmRotate.ShowDialog();
         }
 
     }

@@ -11,9 +11,12 @@ namespace PhotoEditor
 {
     public partial class frmRotate : Form
     {
-        public frmRotate()
+        frmMain frmMain;
+
+        public frmRotate(frmMain frmMain)
         {
             InitializeComponent();
+            this.frmMain = frmMain;
         }
 
         private void lblRotate_Click(object sender, EventArgs e)
@@ -32,6 +35,7 @@ namespace PhotoEditor
             try
             {
                 int degrees = int.Parse(tbDegrees.Text);
+                frmMain.RotateImage(degrees);
             }
             catch
             {

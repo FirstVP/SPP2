@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input.Manipulations;
 
@@ -14,7 +15,8 @@ namespace PhotoEditor
     {
         ImageWrapper imageWrapper = new ImageWrapper();
         ImageController imageController = new ImageController();
-
+        frmRotate frmRotate = new frmRotate();
+        
         public frmMain()
         {
             InitializeComponent();
@@ -32,23 +34,22 @@ namespace PhotoEditor
             MaximumSize = Size;
             pbImage.Location = new Point(ClientSize.Width / 2, ClientSize.Height / 2);
             BackColor = Color.Gray;
-            MouseWheel += Resize;
+            panel.MouseWheel += Resize;
         }
 
         private new void Resize(object sender, MouseEventArgs e)
         {
-
             if (ModifierKeys.HasFlag(Keys.Control))
             {
                 Image image = imageWrapper.GetImage();
                 imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), false);
-                ShowImage();
+                ShowImage();               
             }
         }
 
         private void ShowImage()
         {
-            imageWrapper.Show(this, pbImage, mainMenu);
+            imageWrapper.Show(panel, pbImage, mainMenu);
         }
 
         private void SetImage(Image image, bool isNew)
@@ -81,5 +82,21 @@ namespace PhotoEditor
         {
             ShowOpenDialog();
         }
+
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A)
+            {
+                Image image = imageWrapper.GetImage();
+                imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, 1), false);
+                ShowImage();
+            }
+        }
+
+        private void rotateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmRotate.ShowDialog();
+        }
+
     }
 }

@@ -13,13 +13,13 @@ namespace PhotoEditor
         Image backupImage;
         public Size InitialImageSize { get; private set; }
         
-        public void Show (Form form, PictureBox box, MenuStrip mainMenu)
+        public void Show (Panel panel, PictureBox box, MenuStrip mainMenu)
         {
-            Point loadPoint = new Point(form.ClientSize.Width / 2 - currentImage.Width / 2, form.ClientSize.Height / 2 - currentImage.Height / 2);
+            Point loadPoint = new Point(panel.ClientSize.Width / 2 - currentImage.Width / 2, panel.ClientSize.Height / 2 - currentImage.Height / 2);
             if (loadPoint.X < 0) loadPoint.X = 0;
             if (loadPoint.Y < mainMenu.Size.Height) loadPoint.Y = mainMenu.Size.Height;
-            //loadPoint.X = 10;
-            //loadPoint.Y = 10;
+            loadPoint.X -= panel.HorizontalScroll.Value;
+            loadPoint.Y -= panel.VerticalScroll.Value;
             box.Location = loadPoint;
             box.Size = currentImage.Size;
             box.Image = currentImage;
@@ -34,7 +34,7 @@ namespace PhotoEditor
                 InitialImageSize = img.Size;
                 backupImage = (Image)img.Clone();
             }          
-            GC.Collect();
+           GC.Collect();
         } 
 
         public Image GetImage()

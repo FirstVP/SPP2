@@ -18,7 +18,7 @@ namespace PhotoEditor
             if (loadPoint.X < 0) loadPoint.X = 0;
             if (loadPoint.Y < mainMenu.Size.Height) loadPoint.Y = mainMenu.Size.Height;
             loadPoint.X -= panel.HorizontalScroll.Value;
-            loadPoint.Y -= panel.VerticalScroll.Value;
+            loadPoint.Y -= panel.VerticalScroll.Value; 
             box.Location = loadPoint;
             box.Size = currentImage.Size;
             box.Image = currentImage;

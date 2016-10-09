@@ -9,8 +9,8 @@ namespace PhotoEditor
 {
     public class ImageWrapper
     {
-        Image currentImage;
-        Image backupImage;
+        Bitmap currentImage;
+        Bitmap backupImage;
         
         public void Show (Panel panel, PictureBox box, MenuStrip mainMenu)
         {
@@ -25,12 +25,12 @@ namespace PhotoEditor
             box.Invalidate();
         }
 
-        public void SetImage(Image img, bool isBackup)
+        public void SetImage(Bitmap img, bool isBackup)
         {
             currentImage = img;
             if (isBackup)
             {
-                backupImage = (Image)img.Clone();
+                backupImage = (Bitmap)img.Clone();
             }          
            GC.Collect();
         } 
@@ -43,6 +43,24 @@ namespace PhotoEditor
         public Image GetBackupImage()
         {
             return backupImage;
+        }
+
+        internal int[,] GetBackupImageMatrix()
+        {
+            int[,] result = new int[backupImage.Width,backupImage.Height];
+            for (int i = 0; i < backupImage.Width; i++)
+            {
+                for (int j = 0; j < backupImage.Height; j++)
+                {
+                    result[i, j] = backupImage.GetPixel(i, j).ToArgb();
+                }
+            }
+            return result;
+        }
+
+        internal void RestoreImage()
+        {
+            SetImage(backupImage, false);
         }
     }
 }

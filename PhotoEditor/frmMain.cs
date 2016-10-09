@@ -15,7 +15,8 @@ namespace PhotoEditor
     {
         ImageWrapper imageWrapper = new ImageWrapper();
         ImageController imageController = new ImageController();
-        frmRotate frmRotate;
+        frmBrightSettings frmBrightSettings;
+        frmColor frmColor;
         
         public frmMain()
         {
@@ -35,7 +36,8 @@ namespace PhotoEditor
             pbImage.Location = new Point(ClientSize.Width / 2, ClientSize.Height / 2);
             BackColor = Color.Gray;
             panel.MouseWheel += Resize;
-            frmRotate = new frmRotate(this);
+            frmBrightSettings = new frmBrightSettings(this);
+            frmColor = new frmColor(this);
         }
 
         private new void Resize(object sender, MouseEventArgs e)
@@ -53,14 +55,24 @@ namespace PhotoEditor
             ShowImage();
         }
 
+        public void RestoreImage()
+        {
+            imageWrapper.RestoreImage();
+        }
+
         public void ShowImage()
         {
             imageWrapper.Show(panel, pbImage, mainMenu);
         }
 
-        private void SetImage(Image image, bool isNew)
+        public void SetImage(Bitmap image, bool isNew)
         {
             imageWrapper.SetImage(image, isNew);
+        }
+
+        public int[,] GetBackupImageMatrix()
+        {
+            return imageWrapper.GetBackupImageMatrix();
         }
 
         private void ShowOpenDialog()
@@ -70,8 +82,8 @@ namespace PhotoEditor
             if (open_dialog.ShowDialog() == DialogResult.OK)
             {
                 try
-                {                 
-                    Image image = new Bitmap(open_dialog.FileName);
+                {
+                    Bitmap image = new Bitmap(open_dialog.FileName);
                     SetImage(image, true);
                     ShowImage();    
                 }
@@ -100,7 +112,7 @@ namespace PhotoEditor
 
         private void rotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                frmRotate.ShowDialog();
+                frmBrightSettings.ShowDialog();
         }
 
         private void toolStripMenuItem90degrees_Click(object sender, EventArgs e)
@@ -169,6 +181,36 @@ namespace PhotoEditor
         private void pbImage_MouseDown(object sender, MouseEventArgs e)
         {
             imageController.previousPoint = new Point (0, 0);
+        }
+
+        private void chooseThicknessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void smallBrushToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            imageController.ChooseBrushSize(0);
+        }
+
+        private void averageBrushToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            imageController.ChooseBrushSize(1);
+        }
+
+        private void bigBrushToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            imageController.ChooseBrushSize(2);
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmBrightSettings.ShowDialog();
+        }
+
+        private void colorBalanseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmColor.ShowDialog();
         }
     }
 }

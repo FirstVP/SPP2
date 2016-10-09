@@ -11,17 +11,20 @@ namespace PhotoEditor
     public class ImageController
     {
         const double resizePower = 0.01;
-        const int penWidth = 20;
+        
         public Point previousPoint = new Point(0, 0);
-        public Pen Pen { get; set; } = new Pen (Color.Black, penWidth);
+        public Pen Pen { get; set; }
+
+        int[] PenSize { get; } = new int[] { 20, 40, 100 };
 
         public ImageController()
         {
+            Pen = new Pen(Color.Black, PenSize[0]);
             Pen.EndCap = LineCap.Round;
             Pen.StartCap = LineCap.Round;
         }
 
-        public Image ResizeImage(ImageWrapper imageWrapper, int direction)
+        public Bitmap ResizeImage(ImageWrapper imageWrapper, int direction)
         {
             Image image = imageWrapper.GetImage();
             double scale = 1.0;
@@ -54,8 +57,14 @@ namespace PhotoEditor
 
         public void RotateImage(ImageWrapper imageWrapper, byte typeNumber)
         {
-            RotateFlipType[] rotateType = { RotateFlipType.Rotate90FlipNone, RotateFlipType.Rotate180FlipNone, RotateFlipType.Rotate270FlipNone };
-            imageWrapper.GetImage().RotateFlip(rotateType[typeNumber]);
+            RotateFlipType[] rotateTypesSet = { RotateFlipType.Rotate90FlipNone, RotateFlipType.Rotate180FlipNone, RotateFlipType.Rotate270FlipNone };
+            imageWrapper.GetImage().RotateFlip(rotateTypesSet[typeNumber]);
+            imageWrapper.GetBackupImage().RotateFlip(rotateTypesSet[typeNumber]);
+        }
+
+        public void ChooseBrushSize (int size)
+        {
+            Pen.Width = PenSize[size];
         }
 
         internal void Draw(Image image, Point mousePoint)

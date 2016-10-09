@@ -32,15 +32,7 @@ namespace PhotoEditor
 
         private void buttonRotate_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int degrees = int.Parse(tbDegrees.Text);
-                frmMain.RotateImage(degrees);
-            }
-            catch
-            {
-                MessageBox.Show("Некорректное значение градусной меры");
-            }                     
+                   
         }
     }
 }

@@ -42,16 +42,14 @@ namespace PhotoEditor
         {
             if (ModifierKeys.HasFlag(Keys.Control))
             {
-                Image image = imageWrapper.GetImage();
                 imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), true);
                 ShowImage();               
             }
         }
 
-        public void RotateImage(float angle)
+        public void RotateImage(byte mode)
         {
-            Image image = imageWrapper.GetImage();
-            imageWrapper.SetImage(imageController.RotateImage(imageWrapper, angle), false);
+            imageController.RotateImage(imageWrapper, mode);
             ShowImage();
         }
 
@@ -72,8 +70,7 @@ namespace PhotoEditor
             if (open_dialog.ShowDialog() == DialogResult.OK)
             {
                 try
-                {
-                    imageController.Orientation = 0.0;
+                {                 
                     Image image = new Bitmap(open_dialog.FileName);
                     SetImage(image, true);
                     ShowImage();    
@@ -106,5 +103,72 @@ namespace PhotoEditor
                 frmRotate.ShowDialog();
         }
 
+        private void toolStripMenuItem90degrees_Click(object sender, EventArgs e)
+        {
+            RotateImage(0);
+        }
+
+        private void toolStripMenuItem180degrees_Click(object sender, EventArgs e)
+        {
+            RotateImage(1);
+        }
+
+        private void toolStripMenuItem270degrees_Click(object sender, EventArgs e)
+        {
+            RotateImage(2);
+        }
+
+        private void ShowSaveDialog()
+        {
+            if (imageWrapper.GetImage() != null)
+            {          
+                SaveFileDialog savedialog = new SaveFileDialog();
+                savedialog.Title = "Сохранить как...";
+                savedialog.OverwritePrompt = true;
+                savedialog.CheckPathExists = true;
+                savedialog.Filter = "Файлы изображений | *.bmp; *.jpg; *.gif; *.png";
+                if (savedialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        imageWrapper.GetImage().Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка сохранения файла", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSaveDialog();
+        }
+
+        private void pbImage_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point mousePoint = new Point(e.X, e.Y);
+                imageController.Draw(imageWrapper.GetImage(), mousePoint);
+                pbImage.Invalidate();
+            }           
+        }
+
+        private void chooseColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                imageController.Pen.Color = colorDialog.Color;
+            }
+        }
+
+        private void pbImage_MouseDown(object sender, MouseEventArgs e)
+        {
+            imageController.previousPoint = new Point (0, 0);
+        }
     }
 }

@@ -11,8 +11,15 @@ namespace PhotoEditor
     public class ImageController
     {
         const double resizePower = 0.01;
-        const int circleDegrees = 360;
-        public double Orientation { get; set; } = 0;
+        const int penWidth = 20;
+        public Point previousPoint = new Point(0, 0);
+        public Pen Pen { get; set; } = new Pen (Color.Black, penWidth);
+
+        public ImageController()
+        {
+            Pen.EndCap = LineCap.Round;
+            Pen.StartCap = LineCap.Round;
+        }
 
         public Image ResizeImage(ImageWrapper imageWrapper, int direction)
         {
@@ -45,99 +52,25 @@ namespace PhotoEditor
 
         }
 
-        public Image RotateImage(ImageWrapper imageWrapper, float angle)
+        public void RotateImage(ImageWrapper imageWrapper, byte typeNumber)
         {
-            Image image = imageWrapper.GetBackupImage();
-            Orientation += angle;
-            Orientation %= circleDegrees;
-            
+            RotateFlipType[] rotateType = { RotateFlipType.Rotate90FlipNone, RotateFlipType.Rotate180FlipNone, RotateFlipType.Rotate270FlipNone };
+            imageWrapper.GetImage().RotateFlip(rotateType[typeNumber]);
+        }
 
-            const double pi2 = Math.PI / 2.0;
-
-            double oldWidth = (double)image.Width;
-            double oldHeight = (double)image.Height;
-
-            double theta = (Orientation) * Math.PI / 180.0;
-            double locked_theta = theta;         
-
-            double newWidth, newHeight;
-            int nWidth, nHeight; // The newWidth/newHeight expressed as ints
-
-
-
-            double adjacentTop, oppositeTop;
-            double adjacentBottom, oppositeBottom;
-
-
-            if ((locked_theta >= 0.0 && locked_theta < pi2) ||
-                (locked_theta >= Math.PI && locked_theta < (Math.PI + pi2)))
+        internal void Draw(Image image, Point mousePoint)
+        {           
+            using (Graphics g = Graphics.FromImage(image))
             {
-                adjacentTop = Math.Abs(Math.Cos(locked_theta)) * oldWidth;
-                oppositeTop = Math.Abs(Math.Sin(locked_theta)) * oldWidth;
-
-                adjacentBottom = Math.Abs(Math.Cos(locked_theta)) * oldHeight;
-                oppositeBottom = Math.Abs(Math.Sin(locked_theta)) * oldHeight;
+                if ((previousPoint.X == 0) && (previousPoint.Y == 0))
+                {
+                    previousPoint.X = mousePoint.X;
+                    previousPoint.Y = mousePoint.Y;
+                }
+                g.DrawLine(Pen, previousPoint, mousePoint);
+                previousPoint.X = mousePoint.X;
+                previousPoint.Y = mousePoint.Y;
             }
-            else
-            {
-                adjacentTop = Math.Abs(Math.Sin(locked_theta)) * oldHeight;
-                oppositeTop = Math.Abs(Math.Cos(locked_theta)) * oldHeight;
-
-                adjacentBottom = Math.Abs(Math.Sin(locked_theta)) * oldWidth;
-                oppositeBottom = Math.Abs(Math.Cos(locked_theta)) * oldWidth;
-            }
-
-            newWidth = adjacentTop + oppositeBottom;
-            newHeight = adjacentBottom + oppositeTop;
-
-            nWidth = (int)Math.Ceiling(newWidth);
-            nHeight = (int)Math.Ceiling(newHeight);
-
-            Bitmap rotatedBmp = new Bitmap(nWidth, nHeight);
-
-            using (Graphics g = Graphics.FromImage(rotatedBmp))
-            {
-
-                Point[] points;
-
-                if (locked_theta >= 0.0 && locked_theta < pi2)
-                {
-                    points = new Point[] {
-                                             new Point( (int) oppositeBottom, 0 ),
-                                             new Point( nWidth, (int) oppositeTop ),
-                                             new Point( 0, (int) adjacentBottom )
-                                         };
-
-                }
-                else if (locked_theta >= pi2 && locked_theta < Math.PI)
-                {
-                    points = new Point[] {
-                                             new Point( nWidth, (int) oppositeTop ),
-                                             new Point( (int) adjacentTop, nHeight ),
-                                             new Point( (int) oppositeBottom, 0 )
-                                         };
-                }
-                else if (locked_theta >= Math.PI && locked_theta < (Math.PI + pi2))
-                {
-                    points = new Point[] {
-                                             new Point( (int) adjacentTop, nHeight ),
-                                             new Point( 0, (int) adjacentBottom ),
-                                             new Point( nWidth, (int) oppositeTop )
-                                         };
-                }
-                else
-                {
-                    points = new Point[] {
-                                             new Point( 0, (int) adjacentBottom ),
-                                             new Point( (int) oppositeBottom, 0 ),
-                                             new Point( (int) adjacentTop, nHeight )
-                                         };
-                }
-
-                g.DrawImage(image, points);
-            }
-
-            return rotatedBmp;
         }
     }
 }

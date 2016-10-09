@@ -12,7 +12,7 @@ namespace PhotoEditor
 
         private void ChannelOperations (ref double channel, double contrast)
         {
-            channel /= 255.0;
+            channel /= 255.0; 
             channel -= 0.5;
             channel *= contrast;
             channel += 0.5;

@@ -125,12 +125,7 @@ namespace PhotoEditor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowOpenDialog();
-        }
-
-        private void rotateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmBrightSettings.ShowDialog();
-        }
+        }    
 
         private void toolStripMenuItem90degrees_Click(object sender, EventArgs e)
         {
@@ -186,13 +181,23 @@ namespace PhotoEditor
         }
 
         private void pbImage_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
+        {           
+            try
+            {             
+                if (e.Button == MouseButtons.Right)
+                {
+                    if (imageWrapper.GetImage() == null)
+                        throw new Exception("Не открыта картинка!");
+                    Point mousePoint = new Point(e.X, e.Y);
+                    imageController.Draw(imageWrapper.GetImage(), mousePoint);
+                    pbImage.Invalidate();
+                }
+            }
+            catch (Exception ex)
             {
-                Point mousePoint = new Point(e.X, e.Y);
-                imageController.Draw(imageWrapper.GetImage(), mousePoint);
-                pbImage.Invalidate();
-            }           
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void chooseColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -230,13 +235,31 @@ namespace PhotoEditor
         }
 
         private void lightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmBrightSettings.ShowDialog();
+        {         
+            try
+            {
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                frmBrightSettings.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void colorBalanseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmColor.ShowDialog();
+            try
+            {
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                frmColor.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }         
         }
     }
 }

@@ -119,8 +119,7 @@
             this.toolStripMenuItem270degrees});
             this.rotate90ToolStripMenuItem.Name = "rotate90ToolStripMenuItem";
             this.rotate90ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.rotate90ToolStripMenuItem.Text = "Повернуть на...";
-            this.rotate90ToolStripMenuItem.Click += new System.EventHandler(this.rotateToolStripMenuItem_Click);
+            this.rotate90ToolStripMenuItem.Text = "Повернуть на...";           
             // 
             // toolStripMenuItem90degrees
             // 
@@ -227,8 +226,7 @@
             this.MainMenuStrip = this.mainMenu;
             this.Name = "frmMain";
             this.Text = "Фоторедактор";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
+            this.Load += new System.EventHandler(this.frmMain_Load);            
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();

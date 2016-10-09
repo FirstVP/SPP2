@@ -14,7 +14,7 @@ namespace PhotoEditor
         frmMain frmMain;
         int[,] currentImageMatrix;
         int chosenFilterIndex = 0;
-        readonly Filter[] currentFilters = { new BrightFilter(), new ContrastFilter() } ;
+        readonly Filter[] currentFilters = { new BrightFilter(), new ContrastFilter(), new BWFilter() } ;
         
         public frmBrightSettings(frmMain frmMain)
         {
@@ -87,6 +87,15 @@ namespace PhotoEditor
             tbBright.Value = 0;
             FiltrateImage(1, tbContrast, lblContrast, true);
             tbContrast.Value = 0;
+            UpdateAllScrolls();
+            currentImageMatrix = frmMain.GetBackupImageMatrix();
+        }
+
+        private void buttonBW_Click(object sender, EventArgs e)
+        {
+            tbBright.Value = 0;
+            tbContrast.Value = 0;
+            FiltrateImage(2, tbContrast, lblContrast, true);          
             UpdateAllScrolls();
             currentImageMatrix = frmMain.GetBackupImageMatrix();
         }

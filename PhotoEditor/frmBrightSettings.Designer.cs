@@ -34,6 +34,7 @@
             this.tbContrast = new System.Windows.Forms.TrackBar();
             this.buttonContrast = new System.Windows.Forms.Button();
             this.lblContrast = new System.Windows.Forms.Label();
+            this.buttonBW = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tbBright)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbContrast)).BeginInit();
             this.SuspendLayout();
@@ -96,11 +97,22 @@
             this.lblContrast.TabIndex = 4;
             this.lblContrast.Text = "Контрастность: 0";
             // 
+            // buttonBW
+            // 
+            this.buttonBW.Location = new System.Drawing.Point(140, 198);
+            this.buttonBW.Name = "buttonBW";
+            this.buttonBW.Size = new System.Drawing.Size(232, 23);
+            this.buttonBW.TabIndex = 7;
+            this.buttonBW.Text = "Сделать черно-белым";
+            this.buttonBW.UseVisualStyleBackColor = true;
+            this.buttonBW.Click += new System.EventHandler(this.buttonBW_Click);
+            // 
             // frmBrightSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(510, 203);
+            this.ClientSize = new System.Drawing.Size(510, 249);
+            this.Controls.Add(this.buttonBW);
             this.Controls.Add(this.tbContrast);
             this.Controls.Add(this.buttonContrast);
             this.Controls.Add(this.lblContrast);
@@ -126,5 +138,6 @@
         private System.Windows.Forms.TrackBar tbContrast;
         private System.Windows.Forms.Button buttonContrast;
         private System.Windows.Forms.Label lblContrast;
+        private System.Windows.Forms.Button buttonBW;
     }
 }

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BlueFilter.cs" />
     <Compile Include="BrightFilter.cs" />
+    <Compile Include="BWFilter.cs" />
     <Compile Include="ContrastFilter.cs" />
     <Compile Include="frmColor.cs">
       <SubType>Form</SubType>

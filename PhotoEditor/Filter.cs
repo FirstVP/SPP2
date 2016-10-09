@@ -8,8 +8,8 @@ namespace PhotoEditor
 {
     abstract class Filter
     {
-        const int minChannel = 0;
-        const int maxChannel = 255;
+        protected const int minChannel = 0;
+        protected const int maxChannel = 255;
         const uint alphaChannel = 0xFF000000;
         const int redChannelOffsetBits = 16;
         const int greenChannelOffsetBits = 8;

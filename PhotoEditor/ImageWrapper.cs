@@ -60,7 +60,7 @@ namespace PhotoEditor
 
         internal void RestoreImage()
         {
-            SetImage(backupImage, false);
+            SetImage(backupImage, true);
         }
     }
 }

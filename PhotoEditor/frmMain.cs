@@ -42,17 +42,35 @@ namespace PhotoEditor
 
         private new void Resize(object sender, MouseEventArgs e)
         {
-            if (ModifierKeys.HasFlag(Keys.Control))
+            try
             {
-                imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), true);
-                ShowImage();               
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                if (ModifierKeys.HasFlag(Keys.Control))
+                {                
+                    imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, e.Delta), true);
+                    ShowImage();
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }        
         }
 
         public void RotateImage(byte mode)
         {
-            imageController.RotateImage(imageWrapper, mode);
-            ShowImage();
+            try
+            {
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                imageController.RotateImage(imageWrapper, mode);
+                ShowImage();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }          
         }
 
         public void RestoreImage()
@@ -62,7 +80,16 @@ namespace PhotoEditor
 
         public void ShowImage()
         {
-            imageWrapper.Show(panel, pbImage, mainMenu);
+            try
+            {
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                imageWrapper.Show(panel, pbImage, mainMenu);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }         
         }
 
         public void SetImage(Bitmap image, bool isNew)
@@ -100,19 +127,9 @@ namespace PhotoEditor
             ShowOpenDialog();
         }
 
-        private void frmMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.A)
-            {
-                Image image = imageWrapper.GetImage();
-                imageWrapper.SetImage(imageController.ResizeImage(imageWrapper, 1), false);
-                ShowImage();
-            }
-        }
-
         private void rotateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                frmBrightSettings.ShowDialog();
+            frmBrightSettings.ShowDialog();
         }
 
         private void toolStripMenuItem90degrees_Click(object sender, EventArgs e)
@@ -156,7 +173,16 @@ namespace PhotoEditor
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowSaveDialog();
+            try
+            {
+                if (imageWrapper.GetImage() == null)
+                    throw new Exception("Не открыта картинка!");
+                ShowSaveDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }         
         }
 
         private void pbImage_MouseMove(object sender, MouseEventArgs e)
